@@ -10,8 +10,11 @@
                 background-image: url('lib/ext-4.1.1a/examples/shared/icons/fam/group_add.png') !important;
             }
 
-            .employee-remove {
-                background-image: url('../shared/icons/fam/user_delete.gif') !important;
+            .eliminar-matrimonio {
+                background-image: url('lib/ext-4.1.1a/examples/shared/icons/fam/group_delete.png') !important;
+            }
+            .crear-pdf {
+                background-image: url('lib/ext-4.1.1a/examples/shared/icons/fam/adobe_pdf.png') !important;
             }
         </style>
     </head>
