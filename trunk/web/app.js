@@ -143,11 +143,16 @@ Ext.onReady(function(){
         store: store2,
         columns: [
             {
+                header: 'id',
+                dataIndex: 'id',
+                width: 50
+            },
+            {
                 text:'Hombre',
                 columns:[
                     {
                         header: 'Apellido Paterno',
-                        dataIndex: 'name',
+                        dataIndex: 'apellidoPaternoH',
                         width: 90,
                         editor: {
                             // defaults to textfield if no xtype is supplied
@@ -156,25 +161,24 @@ Ext.onReady(function(){
                     },
                     {
                         header: 'Apellido Materno',
-                        dataIndex: 'email',
+                        dataIndex: 'apellidoMaternoH',
                         width: 90,
                         editor: {
-                            allowBlank: false,
-                            vtype: 'email'
+                            allowBlank: false
+                            //vtype: 'email'
                         }
                     },
                     {
-                        xtype: 'datecolumn',
                         header: 'Nombre',
-                        dataIndex: 'start',
+                        dataIndex: 'nombreH',
                         width: 90,
                         editor: {
-                            xtype: 'datefield',
-                            allowBlank: false,
-                            format: 'm/d/Y',
-                            minValue: '01/01/2006',
-                            minText: 'Cannot have a start date before the company existed!',
-                            maxValue: Ext.Date.format(new Date(), 'm/d/Y')
+//                            xtype: 'datefield',
+                            allowBlank: false
+//                            format: 'm/d/Y',
+//                            minValue: '01/01/2006',
+//                            minText: 'Cannot have a start date before the company existed!',
+//                            maxValue: Ext.Date.format(new Date(), 'm/d/Y')
                         }
                     }
                 ]
@@ -184,67 +188,67 @@ Ext.onReady(function(){
                 text:'Mujer',
                 columns:[
                     {
-                        xtype: 'numbercolumn',
+//                        xtype: 'numbercolumn',
                         header: 'Apellido Paterno',
-                        dataIndex: 'salary',
+                        dataIndex: 'apellidoPaternoM',
                         format: 'EUR 0',
                         width: 90,
                         editor: {
-                            xtype: 'numberfield',
-                            allowBlank: false,
-                            minValue: 1,
-                            maxValue: 150000
+//                            xtype: 'numberfield',
+                            allowBlank: false
+//                            minValue: 1,
+//                            maxValue: 150000
                         }
                     }, {
-                        xtype: 'checkcolumn',
+//                        xtype: 'checkcolumn',
                         header: 'Apellido Materno',
-                        dataIndex: 'active',
+                        dataIndex: 'apellidoMaternoM',
                         width: 90,
                         editor: {
-                            xtype: 'checkbox',
-                            cls: 'x-grid-checkheader-editor'
+//                            xtype: 'checkbox',
+//                            cls: 'x-grid-checkheader-editor'
                         }
                     }, {
-                        xtype: 'checkcolumn',
+//                        xtype: 'checkcolumn',
                         header: 'Nombre',
-                        dataIndex: 'active',
+                        dataIndex: 'nombreM',
                         width: 90,
                         editor: {
-                            xtype: 'checkbox',
-                            cls: 'x-grid-checkheader-editor'
+//                            xtype: 'checkbox',
+//                            cls: 'x-grid-checkheader-editor'
                         }
                     }
                 ]
             },
             {
-                xtype: 'numbercolumn',
+//                xtype: 'numbercolumn',
                 header: 'Unk_0',
-                dataIndex: 'salary',
-                format: 'EUR 0',
+                dataIndex: 'unknow_0',
+//                format: 'EUR 0',
                 width: 50,
                 editor: {
-                    xtype: 'numberfield',
-                    allowBlank: false,
-                    minValue: 1,
-                    maxValue: 150000
+//                    xtype: 'numberfield',
+//                    allowBlank: false,
+//                    minValue: 1,
+//                    maxValue: 150000
                 }
             }, {
-                xtype: 'checkcolumn',
+//                xtype: 'checkcolumn',
                 header: 'Unk_1',
-                dataIndex: 'active',
+                dataIndex: 'unknow_1',
                 width: 50,
                 editor: {
-                    xtype: 'checkbox',
-                    cls: 'x-grid-checkheader-editor'
+//                    xtype: 'checkbox',
+//                    cls: 'x-grid-checkheader-editor'
                 }
             }, {
-                xtype: 'checkcolumn',
+//                xtype: 'checkcolumn',
                 header: 'Unk_2',
-                dataIndex: 'active',
+                dataIndex: 'unknow_2',
                 width: 50,
                 editor: {
-                    xtype: 'checkbox',
-                    cls: 'x-grid-checkheader-editor'
+//                    xtype: 'checkbox',
+//                    cls: 'x-grid-checkheader-editor'
                 }
             }
         ],

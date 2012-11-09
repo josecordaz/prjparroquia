@@ -6,6 +6,9 @@ package matrimonios;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,20 +40,33 @@ public class ConsultaMatrimoniosStore extends HttpServlet {
             /*
              * TODO output your page here. You may use following sample code.
              */
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ConsultaMatrimoniosStore</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ConsultaMatrimoniosStore at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+             Class.forName("com.mysql.jdbc.Driver");
+             
+             Connection conexion = DriverManager.getConnection ("jdbc:mysql://localhost/prjparroquia","root", "");
+             
+             Statement s = conexion.createStatement(); 
+             ResultSet rs = s.executeQuery ("select * from matrimonios");
+             
+             while (rs.next()) 
+            { 
+                out.println("{"
+                    + "\"totalCount\": \"6679\","
+                    + "\"data\": [{\"id\":\""+rs.getInt(1)+"\",\"apellidoPaternoH\":\""+rs.getString(2)+"\",\"apellidoMaternoH\":\""+rs.getString(3)+"\",\"nombreH\":\""+rs.getString(4)+"\",\"apellidoPaternoM\":\""+rs.getString(5)+"\",\"apellidoMaternoM\":\""+rs.getString(6)+"\",\"nombreM\":\""+rs.getString(7)+"\",\"unknow_0\":\""+rs.getString(8)+"\",\"unknow_1\":\""+rs.getString(9)+"\",\"unknow_2\":\""+rs.getString(10)+"\"}]}");
+            }
+             
+             conexion.close();
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaMatrimoniosStore.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ConsultaMatrimoniosStore.class.getName()).log(Level.SEVERE, null, ex);
         } finally {            
             out.close();
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate=\"collapsed\" desc=\"HttpServlet methods. Click on the + sign on the left to edit the code.\">
     /**
      * Handles the HTTP
      * <code>GET</code> method.
