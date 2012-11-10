@@ -205,6 +205,7 @@ Ext.onReady(function(){
                         dataIndex: 'apellidoMaternoM',
                         width: 90,
                         editor: {
+                            allowBlank: false
 //                            xtype: 'checkbox',
 //                            cls: 'x-grid-checkheader-editor'
                         }
@@ -214,6 +215,7 @@ Ext.onReady(function(){
                         dataIndex: 'nombreM',
                         width: 90,
                         editor: {
+                            allowBlank: false
 //                            xtype: 'checkbox',
 //                            cls: 'x-grid-checkheader-editor'
                         }
@@ -227,6 +229,7 @@ Ext.onReady(function(){
 //                format: 'EUR 0',
                 width: 50,
                 editor: {
+                    allowBlank: false
 //                    xtype: 'numberfield',
 //                    allowBlank: false,
 //                    minValue: 1,
@@ -238,6 +241,7 @@ Ext.onReady(function(){
                 dataIndex: 'unknow_1',
                 width: 50,
                 editor: {
+                    allowBlank: false
 //                    xtype: 'checkbox',
 //                    cls: 'x-grid-checkheader-editor'
                 }
@@ -247,6 +251,7 @@ Ext.onReady(function(){
                 dataIndex: 'unknow_2',
                 width: 50,
                 editor: {
+                    allowBlank: false
 //                    xtype: 'checkbox',
 //                    cls: 'x-grid-checkheader-editor'
                 }
@@ -265,15 +270,20 @@ Ext.onReady(function(){
                     rowEditing.cancelEdit();
 
                     // Create a model instance
-                    var r = Ext.create('Employee', {
-                        name: 'New Guy',
-                        email: 'new@sencha-test.com',
-                        start: Ext.Date.clearTime(new Date()),
-                        salary: 50000,
-                        active: true
+                    var r = Ext.create('app.model.matrimonios.MatrimoniosModel', {
+                        id: '',
+                        apellidoPaternoH: '',
+                        apellidoMaternoH: '',
+                        nombreH:'',
+                        apellidoPaternoM: '',
+                        apellidoMaternoM: '',
+                        nombreM:'',
+                        unknow_0:'',
+                        unknow_1:'',
+                        unknow_2:''
                     });
 
-                    store.insert(0, r);
+                    store2.insert(0, r);
                     rowEditing.startEdit(0, 0);
                 }
             },
