@@ -30,12 +30,18 @@ public class matrimoniosService {
              Statement s = conexion.createStatement();
              ResultSet rs = s.executeQuery ("select * from matrimonios");
              
+             rs.next();
+             
+             out = "{"
+                    + "\"totalCount\": \"6679\","
+                    + "\"data\": [{\"id\":\""+rs.getInt(1)+"\",\"apellidoPaternoH\":\""+rs.getString(2)+"\",\"apellidoMaternoH\":\""+rs.getString(3)+"\",\"nombreH\":\""+rs.getString(4)+"\",\"apellidoPaternoM\":\""+rs.getString(5)+"\",\"apellidoMaternoM\":\""+rs.getString(6)+"\",\"nombreM\":\""+rs.getString(7)+"\",\"unknow_0\":\""+rs.getString(8)+"\",\"unknow_1\":\""+rs.getString(9)+"\",\"unknow_2\":\""+rs.getString(10)+"\"}";
+             
              while (rs.next()) 
             { 
-                out = "{"
-                    + "\"totalCount\": \"6679\","
-                    + "\"data\": [{\"id\":\""+rs.getInt(1)+"\",\"apellidoPaternoH\":\""+rs.getString(2)+"\",\"apellidoMaternoH\":\""+rs.getString(3)+"\",\"nombreH\":\""+rs.getString(4)+"\",\"apellidoPaternoM\":\""+rs.getString(5)+"\",\"apellidoMaternoM\":\""+rs.getString(6)+"\",\"nombreM\":\""+rs.getString(7)+"\",\"unknow_0\":\""+rs.getString(8)+"\",\"unknow_1\":\""+rs.getString(9)+"\",\"unknow_2\":\""+rs.getString(10)+"\"}]}";
+                out = out + ",{\"id\":\""+rs.getInt(1)+"\",\"apellidoPaternoH\":\""+rs.getString(2)+"\",\"apellidoMaternoH\":\""+rs.getString(3)+"\",\"nombreH\":\""+rs.getString(4)+"\",\"apellidoPaternoM\":\""+rs.getString(5)+"\",\"apellidoMaternoM\":\""+rs.getString(6)+"\",\"nombreM\":\""+rs.getString(7)+"\",\"unknow_0\":\""+rs.getString(8)+"\",\"unknow_1\":\""+rs.getString(9)+"\",\"unknow_2\":\""+rs.getString(10)+"\"}";
             }
+             
+            out = out + "]}";
              
              conexion.close();
             
