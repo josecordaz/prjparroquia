@@ -34,7 +34,7 @@ Ext.onReady(function(){
     var store2 = Ext.create('Ext.data.Store', {
         model:'app.model.matrimonios.MatrimoniosModel',
         autoLoad:true,
-        autoSync:true,
+//        autoSync:true,
         proxy: {
             type: 'ajax',
             root: 'data',
@@ -227,6 +227,7 @@ Ext.onReady(function(){
                 iconCls: 'eliminar-matrimonio',
                 handler: function() {
                     store2.sync();
+//                    store2.reload();
 //                    var sm = grid.getSelectionModel();
 //                    rowEditing.cancelEdit();
 //                    store.remove(sm.getSelection());
