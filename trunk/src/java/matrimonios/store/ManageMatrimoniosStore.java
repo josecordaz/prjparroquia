@@ -5,16 +5,13 @@
 package matrimonios.store;
 
 import java.io.*;
-import java.util.Enumeration;
-import java.util.Iterator;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.sf.json.JSONObject;
+import net.sf.json.*;//JSONObject;
 import matrimonios.service.matrimoniosService;
-import net.sf.json.util.JSONTokener;
 
 /**
  *
@@ -27,7 +24,6 @@ public class ManageMatrimoniosStore extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        StringBuilder inserta;
         matrimoniosService service;
         String metodo;
         try {
@@ -36,38 +32,11 @@ public class ManageMatrimoniosStore extends HttpServlet {
             if(metodo.equals("GET")){
                 out.println(service.consulta());
             }else if(metodo.equals("POST")){
-                BufferedReader reader= request.getReader ();
-                inserta = new StringBuilder();
-                char [] buf = new char [4 * 1024]; // 4 KB caracteres búfer 
-                int len; 
-                len = reader.read(buf, 0, buf.length);
-                while (len != -1) { 
-                    out.write(buf, 0, len); 
-                    inserta.append(buf, 0, len);
-                    len = reader.read(buf, 0, buf.length);
-                }
-//                JSONObject newObj = new JSONObject(inserta.toString());
-//                Enumeration eNames = (Enumeration) newObj.keys(); //gets all the keys
-//
-//                while(eNames.hasMoreElements())
-//                {
-//                   eNames.hasMoreElements();
-//                }
-                JSONObject jsonObject = (JSONObject) new JSONTokener(inserta.toString()).nextValue();
-
-                Iterator iterKey = jsonObject.keys(); // create the iterator for the json object.
-                while(iterKey.hasNext()) {
-                    String jsonKey = (String)iterKey.next(); //retrieve every key ex: name, age
-                    String jsonValue = jsonObject.getString(jsonKey); //use key to retrieve value from 
-
-                    //This is a json object and will display the key value pair.
-
-                    System.out.println(jsonKey  + " --> " + jsonValue  );
-                }
-                
-                out.append("veamos");
-                
+                service.inserta(request);
             }
+        }catch(Exception ex){
+            ex.getMessage();
+            
         } finally {            
             out.close();
         }
