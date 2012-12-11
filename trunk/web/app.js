@@ -34,10 +34,13 @@ Ext.onReady(function(){
     var store2 = Ext.create('Ext.data.Store', {
         model:'app.model.matrimonios.MatrimoniosModel',
         autoLoad:true,
-//        autoSync:true,
+        sorters: { property: 'id', direction : 'asc' },
+        autoSync:true,
         proxy: {
-            type: 'ajax',
-            root: 'data',
+            type: 'rest',
+            batchActions:true,
+            appendId:false,
+//            root: 'data',
             url : '/'+getAplication()+'/ManageMatrimoniosStore.x',
             reader  : {
                 type        : 'json',
@@ -61,7 +64,16 @@ Ext.onReady(function(){
                         icon: Ext.MessageBox.ERROR,
                         buttons: Ext.Msg.OK
                     });
-                }   
+                }
+            }
+        },
+        listeners:{
+            write:function( store, operation, eOpts ){
+                store2.sort('id','ASC');                
+            },
+            beforesync:function( options, eOpts ){
+                true;
+                true;
             }
         }
     });
@@ -74,12 +86,15 @@ Ext.onReady(function(){
     // create the grid and specify what field you want
     // to use for the editor at each column.
     var grid = Ext.create('Ext.grid.Panel', {
+        columnLines : true,
+        rowLines :true,
         store: store2,
         columns: [
             {
                 header: 'id',
                 dataIndex: 'id',
-                width: 50
+                width: 50,
+                sortable:true
             },
             {
                 text:'Hombre',
@@ -88,6 +103,7 @@ Ext.onReady(function(){
                         header: 'Apellido Paterno',
                         dataIndex: 'apellidoPaternoH',
                         width: 90,
+                        sortable:true,
                         editor: {
                             // defaults to textfield if no xtype is supplied
                             allowBlank: false
@@ -97,6 +113,7 @@ Ext.onReady(function(){
                         header: 'Apellido Materno',
                         dataIndex: 'apellidoMaternoH',
                         width: 90,
+                        sortable:true,
                         editor: {
                             allowBlank: false
                             //vtype: 'email'
@@ -106,6 +123,7 @@ Ext.onReady(function(){
                         header: 'Nombre',
                         dataIndex: 'nombreH',
                         width: 90,
+                        sortable:true,
                         editor: {
 //                            xtype: 'datefield',
                             allowBlank: false
@@ -125,7 +143,7 @@ Ext.onReady(function(){
 //                        xtype: 'numbercolumn',
                         header: 'Apellido Paterno',
                         dataIndex: 'apellidoPaternoM',
-                        format: 'EUR 0',
+                        sortable:true,
                         width: 90,
                         editor: {
 //                            xtype: 'numberfield',
@@ -137,6 +155,7 @@ Ext.onReady(function(){
 //                        xtype: 'checkcolumn',
                         header: 'Apellido Materno',
                         dataIndex: 'apellidoMaternoM',
+                        sortable:true,
                         width: 90,
                         editor: {
                             allowBlank: false
@@ -148,6 +167,7 @@ Ext.onReady(function(){
                         header: 'Nombre',
                         dataIndex: 'nombreM',
                         width: 90,
+                        sortable:true,
                         editor: {
                             allowBlank: false
 //                            xtype: 'checkbox',
@@ -161,6 +181,7 @@ Ext.onReady(function(){
                 header: 'Unk_0',
                 dataIndex: 'unknow_0',
 //                format: 'EUR 0',
+                sortable:true,
                 width: 50,
                 editor: {
                     allowBlank: false
@@ -174,6 +195,7 @@ Ext.onReady(function(){
                 header: 'Unk_1',
                 dataIndex: 'unknow_1',
                 width: 50,
+                sortable:true,
                 editor: {
                     allowBlank: false
 //                    xtype: 'checkbox',
@@ -184,6 +206,7 @@ Ext.onReady(function(){
                 header: 'Unk_2',
                 dataIndex: 'unknow_2',
                 width: 50,
+                sortable:true,
                 editor: {
                     allowBlank: false
 //                    xtype: 'checkbox',
@@ -202,7 +225,6 @@ Ext.onReady(function(){
                 iconCls: 'agregar-matrimonio',
                 handler : function() {
                     rowEditing.cancelEdit();
-
                     // Create a model instance
                     var r = Ext.create('app.model.matrimonios.MatrimoniosModel', {
                         id: '',
@@ -216,26 +238,33 @@ Ext.onReady(function(){
                         unknow_1:'',
                         unknow_2:''
                     });
-
                     store2.insert(0, r);
                     rowEditing.startEdit(0, 0);
                 }
+            }
+            ,
+            {
+                itemId: 'saveEmployee',
+                text: 'Guardar',
+                iconCls: 'guardar-matrimonio',
+                handler: function() {
+                    store2.sync();
+                    store2.sort('id','ASC');
+                }
             },
+            ,
             {
                 itemId: 'removeEmployee',
                 text: 'Eliminar',
                 iconCls: 'eliminar-matrimonio',
                 handler: function() {
-                    store2.sync();
-//                    store2.reload();
-//                    var sm = grid.getSelectionModel();
-//                    rowEditing.cancelEdit();
-//                    store.remove(sm.getSelection());
-//                    if (store.getCount() > 0) {
-//                        sm.select(0);
-//                    }
-                },
-                disabled: true
+                    var sm = grid.getSelectionModel();
+                    rowEditing.cancelEdit();
+                    store2.remove(sm.getSelection());
+                    if (store2.getCount() > 0) {
+                        sm.select(0);
+                    }
+                }
             },
             {
                 itemId: 'importarPdf',

@@ -32,8 +32,11 @@ public class ManageMatrimoniosStore extends HttpServlet {
             if(metodo.equals("GET")){
                 out.println(service.consulta());
             }else if(metodo.equals("POST")){
-                service.inserta(request);
-                out.print("{\"totalCount\": \"6679\",\"data\": [{\"id\":\"1\",\"apellidoPaternoH\":\"ACEVEDO\",\"apellidoMaternoH\":\"CASILLAS\",\"nombreH\":\"ANTONIO RAFAEL\",\"apellidoPaternoM\":\"VERA\",\"apellidoMaternoM\":\"GARCÍA\",\"nombreM\":\"MARÍA\",\"unknow_0\":\"50\",\"unknow_1\":\"55 v\",\"unknow_2\":\"221\"},{\"id\":\"8\",\"apellidoPaternoH\":\"j\",\"apellidoMaternoH\":\"j\",\"nombreH\":\"g\",\"apellidoPaternoM\":\"k\",\"apellidoMaternoM\":\"n\",\"nombreM\":\"g\",\"unknow_0\":\"b\",\"unknow_1\":\"t\",\"unknow_2\":\"f\"},{\"id\":\"9\",\"apellidoPaternoH\":\"j\",\"apellidoMaternoH\":\"j\",\"nombreH\":\"g\",\"apellidoPaternoM\":\"k\",\"apellidoMaternoM\":\"n\",\"nombreM\":\"g\",\"unknow_0\":\"b\",\"unknow_1\":\"t\",\"unknow_2\":\"f\"},{\"id\":\"10\",\"apellidoPaternoH\":\"ordaz\",\"apellidoMaternoH\":\"crizantos\",\"nombreH\":\"jose carlos\",\"apellidoPaternoM\":\"lupian\",\"apellidoMaternoM\":\"galvez p\",\"nombreM\":\"paulina\",\"unknow_0\":\"kd\",\"unknow_1\":\"fd\",\"unknow_2\":\"fd\"},{\"id\":\"11\",\"apellidoPaternoH\":\"\",\"apellidoMaternoH\":\"\",\"nombreH\":\"\",\"apellidoPaternoM\":\"\",\"apellidoMaternoM\":\"\",\"nombreM\":\"\",\"unknow_0\":\"\",\"unknow_1\":\"\",\"unknow_2\":\"\"},{\"id\":\"12\",\"apellidoPaternoH\":\"Ordaz\",\"apellidoMaternoH\":\"Rosas\",\"nombreH\":\"Carlos\",\"apellidoPaternoM\":\"Crizantos\",\"apellidoMaternoM\":\"Magallón\",\"nombreM\":\"Cecilia \",\"unknow_0\":\"kdk\",\"unknow_1\":\"kdk\",\"unknow_2\":\"kkd\"},{\"id\":\"13\",\"apellidoPaternoH\":\"yh\",\"apellidoMaternoH\":\"tg\",\"nombreH\":\"rf\",\"apellidoPaternoM\":\"ed\",\"apellidoMaternoM\":\"ws\",\"nombreM\":\"ed\",\"unknow_0\":\"rf\",\"unknow_1\":\"tg\",\"unknow_2\":\"yh\"}]}");
+                out.print(service.inserta(request));
+            }else if(metodo.equals("DELETE")){
+                out.print(service.elimina(request));
+            }else if(metodo.equals("PUT")){
+                out.print(service.actualiza(request));
             }
         }catch(Exception ex){
             ex.getMessage();
@@ -43,42 +46,30 @@ public class ManageMatrimoniosStore extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP
-     * <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP
-     * <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
+    
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+    
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
