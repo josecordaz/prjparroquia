@@ -24,5 +24,6 @@
     </head>
 <body>
     <div id="editor-grid"></div>
+    <a href="/prjparroquia/generaPDF.x">ver pdf</a>
 </body>
 </html>
