@@ -7,23 +7,21 @@
         
          <style type="text/css">
             .agregar-matrimonio {
-                background-image: url('lib/ext-4.1.1a/examples/shared/icons/fam/group_add.png') !important;
+                background-image: url('resources/icons/group_add.png') !important;
             }
 
             .eliminar-matrimonio {
-                background-image: url('lib/ext-4.1.1a/examples/shared/icons/fam/group_delete.png') !important;
+                background-image: url('resources/icons/group_delete.png') !important;
             }
             .guardar-matrimonio {
-                background-image: url('lib/ext-4.1.1a/examples/shared/icons/fam/save.png') !important;
+                background-image: url('resources/icons/save.png') !important;
             }
-            
             .crear-pdf {
-                background-image: url('lib/ext-4.1.1a/examples/shared/icons/fam/adobe_pdf.png') !important;
+                background-image: url('resources/icons/adobe_pdf.png') !important;
             }
         </style>
     </head>
 <body>
     <div id="editor-grid"></div>
-    <a href="/prjparroquia/generaPDF.x">ver pdf</a>
 </body>
 </html>
