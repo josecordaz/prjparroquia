@@ -29,9 +29,10 @@ public class ManageMatrimoniosStore extends HttpServlet {
         try {
             service = new matrimoniosService();
             metodo = request.getMethod();
-            if(metodo.equals("GET")){
-                out.println(service.consulta());
-            }else if(metodo.equals("POST")){
+//            if(metodo.equals("GET")){
+//               
+//            }else
+                if(metodo.equals("POST")){
                 out.print(service.inserta(request));
             }else if(metodo.equals("DELETE")){
                 out.print(service.elimina(request));
@@ -49,7 +50,18 @@ public class ManageMatrimoniosStore extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        matrimoniosService service;
+        String metodo;
+         service = new matrimoniosService();
+        
+         int start = Integer.parseInt(request.getParameter("start"));
+                int limit = Integer.parseInt(request.getParameter("limit"));
+                out.println(service.consulta(start,limit));
+        
         processRequest(request, response);
+        
     }
 
     @Override

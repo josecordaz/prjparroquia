@@ -9,7 +9,7 @@ Ext.require([
     'Ext.util.*',
     'Ext.state.*',
     'Ext.form.*',
-    'Ext.ux.CheckColumn'
+    'Ext.grid.PagingScroller'
 ]);
 
 Ext.onReady(function(){
@@ -36,10 +36,15 @@ Ext.onReady(function(){
         autoLoad:true,
         sorters: { property: 'id', direction : 'asc' },
         autoSync:true,
+        remoteGroup: true,
+        buffered: true,
+        leadingBufferZone: 50,
+        pageSize: 50,
         proxy: {
+            timeout : 12000,
             type: 'rest',
-            batchActions:true,
-            appendId:false,
+//            batchActions:true,
+//            appendId:false,
 //            root: 'data',
             url : '/'+getAplication()+'/ManageMatrimoniosStore.x',
             reader  : {
@@ -65,7 +70,15 @@ Ext.onReady(function(){
                         buttons: Ext.Msg.OK
                     });
                 }
-            }
+            },
+             // sends single sort as multi parameter
+            simpleSortMode: true,
+            // sends single group as multi parameter
+            simpleGroupMode: true,
+
+            // This particular service cannot sort on more than one field, so grouping === sorting.
+            groupParam: 'sort',
+            groupDirectionParam: 'dir'
         },
         listeners:{
             write:function( store, operation, eOpts ){
@@ -74,6 +87,24 @@ Ext.onReady(function(){
             beforesync:function( options, eOpts ){
                 true;
                 true;
+            },
+            
+            // This particular service cannot sort on more than one field, so if grouped, disable sorting
+            groupchange: function(store, groupers) {
+                var sortable = !store.isGrouped(),
+                    headers = grid.headerCt.getVisibleGridColumns(),
+                    i, len = headers.length;
+                
+                for (i = 0; i < len; i++) {
+                    headers[i].sortable = (headers[i].sortable !== undefined) ? headers[i].sortable : sortable;
+                }
+            },
+
+            // This particular service cannot sort on more than one field, so if grouped, disable sorting
+            beforeprefetch: function(store, operation) {
+                if (operation.groupers && operation.groupers.length) {
+                    delete operation.sorters;
+                }
             }
         }
     });
@@ -89,6 +120,20 @@ Ext.onReady(function(){
         columnLines : true,
         rowLines :true,
         store: store2,
+        selModel: {
+            pruneRemoved: false
+        },
+        viewConfig: {
+            trackOver: false
+        },
+        features:[{
+            ftype: 'grouping',
+            hideGroupedHeader: false
+        }],
+        verticalScroller:{
+            variableRowHeight: true
+
+        },
         columns: [
             {
                 header: 'id',
@@ -214,7 +259,7 @@ Ext.onReady(function(){
                 }
             }
         ],
-        renderTo: 'editor-grid',
+        renderTo: Ext.getBody(),
         width: 1000,
         height: 400,
         title: 'Matrimonios',
@@ -271,6 +316,7 @@ Ext.onReady(function(){
                 text: 'Importar a PDF',
                 iconCls: 'crear-pdf',
                 handler: function() {
+                    window.open('/prjparroquia/generaPDF.x');
 //                    var sm = grid.getSelectionModel();
 //                    rowEditing.cancelEdit();
 //                    store.remove(sm.getSelection());

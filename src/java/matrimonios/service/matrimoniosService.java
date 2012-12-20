@@ -19,7 +19,7 @@ import net.sf.json.JSONObject;
  * @author JoseCarlos
  */
 public class matrimoniosService {
-    public String consulta(){
+    public String consulta(int start,int limit){
         String out = "";
         Connection conexion=null;
          try {
@@ -28,7 +28,7 @@ public class matrimoniosService {
              conexion = DriverManager.getConnection ("jdbc:mysql://localhost:3307/prjparroquia","root", "usbw");
              
              Statement s = conexion.createStatement();
-             ResultSet rs = s.executeQuery ("select * from matrimonios");
+             ResultSet rs = s.executeQuery ("select * from matrimonios where id between "+start+" and "+start+limit);
              
              rs.next();
              
