@@ -28,12 +28,19 @@ public class matrimoniosService {
              conexion = DriverManager.getConnection ("jdbc:mysql://localhost:3307/prjparroquia","root", "usbw");
              
              Statement s = conexion.createStatement();
-             ResultSet rs = s.executeQuery ("select * from matrimonios where id between "+start+" and "+start+limit);
+             
+             ResultSet rss = s.executeQuery("select count(*) from matrimonios");
+             
+             rss.next();
+             
+             String count = ""+(rss.getInt(1)+1);
+             
+             ResultSet rs = s.executeQuery ("select * from matrimonios where id between "+start+" and "+(start+limit));
              
              rs.next();
              
              out = "{"
-                    + "\"totalCount\": \"6679\","
+                    + "\"totalCount\": \""+count+"\","
                     + "\"data\": [{\"id\":\""+rs.getInt(1)+"\",\"apellidoPaternoH\":\""+rs.getString(2)+"\",\"apellidoMaternoH\":\""+rs.getString(3)+"\",\"nombreH\":\""+rs.getString(4)+"\",\"apellidoPaternoM\":\""+rs.getString(5)+"\",\"apellidoMaternoM\":\""+rs.getString(6)+"\",\"nombreM\":\""+rs.getString(7)+"\",\"unknow_0\":\""+rs.getString(8)+"\",\"unknow_1\":\""+rs.getString(9)+"\",\"unknow_2\":\""+rs.getString(10)+"\"}";
              
              while (rs.next()) 
@@ -42,6 +49,56 @@ public class matrimoniosService {
             }
              
             out = out + "]}";
+             
+             conexion.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaMatrimoniosStore.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ConsultaMatrimoniosStore.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+            try {
+                conexion.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(matrimoniosService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+         }
+         return out;
+    }
+    public String consulta(int start,int limit,String query){
+        String out = "";
+        Connection conexion=null;
+         try {
+             Class.forName("com.mysql.jdbc.Driver");
+             
+             conexion = DriverManager.getConnection ("jdbc:mysql://localhost:3307/prjparroquia","root", "usbw");
+             
+             Statement s = conexion.createStatement();
+             
+             ResultSet rss = s.executeQuery("select count(*) from matrimonios where apellidoPaternoH like '%"+query+"%' or apellidoMaternoH like '%"+query+"%' or nombreH like '%"+query+"%' or apellidoPaternoM like '%"+query+"%' or apellidoMaternoM like '%"+query+"%' or nombreM like '%"+query+"%'");
+             
+             rss.next();
+             if(!(""+rss.getInt(1)).equals("0")){
+             
+                String count = ""+(rss.getInt(1)+1);
+
+                ResultSet rs = s.executeQuery ("select * from matrimonios where apellidoPaternoH like '%"+query+"%' or apellidoMaternoH like '%"+query+"%' or nombreH like '%"+query+"%' or apellidoPaternoM like '%"+query+"%' or apellidoMaternoM like '%"+query+"%' or nombreM like '%"+query+"%' LIMIT "+start+","+limit+"");
+
+                rs.next();
+             
+                out = "{"
+                        + "\"totalCount\": \""+count+"\","
+                        + "\"data\": [{\"id\":\""+rs.getInt(1)+"\",\"apellidoPaternoH\":\""+rs.getString(2)+"\",\"apellidoMaternoH\":\""+rs.getString(3)+"\",\"nombreH\":\""+rs.getString(4)+"\",\"apellidoPaternoM\":\""+rs.getString(5)+"\",\"apellidoMaternoM\":\""+rs.getString(6)+"\",\"nombreM\":\""+rs.getString(7)+"\",\"unknow_0\":\""+rs.getString(8)+"\",\"unknow_1\":\""+rs.getString(9)+"\",\"unknow_2\":\""+rs.getString(10)+"\"}";
+
+                while (rs.next()) 
+                { 
+                    out = out + ",{\"id\":\""+rs.getInt(1)+"\",\"apellidoPaternoH\":\""+rs.getString(2)+"\",\"apellidoMaternoH\":\""+rs.getString(3)+"\",\"nombreH\":\""+rs.getString(4)+"\",\"apellidoPaternoM\":\""+rs.getString(5)+"\",\"apellidoMaternoM\":\""+rs.getString(6)+"\",\"nombreM\":\""+rs.getString(7)+"\",\"unknow_0\":\""+rs.getString(8)+"\",\"unknow_1\":\""+rs.getString(9)+"\",\"unknow_2\":\""+rs.getString(10)+"\"}";
+                }
+
+                out = out + "]}";
+             }else{
+                 out = "{\"totalCount\": \"1\",\"data\": []}";
+             }
              
              conexion.close();
             

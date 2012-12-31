@@ -4,13 +4,13 @@
  */
 package matrimonios.store;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.sf.json.*;//JSONObject;
 import matrimonios.service.matrimoniosService;
 
 /**
@@ -29,10 +29,16 @@ public class ManageMatrimoniosStore extends HttpServlet {
         try {
             service = new matrimoniosService();
             metodo = request.getMethod();
-//            if(metodo.equals("GET")){
-//               
-//            }else
-                if(metodo.equals("POST")){
+            if(metodo.equals("GET")){
+                int start = Integer.parseInt(request.getParameterValues("start")[0].toString());
+                int limit = Integer.parseInt(request.getParameterValues("limit")[0].toString());
+                if(request.getParameter("query")==null){
+                    out.println(service.consulta(start,limit));
+                }else{
+                    String query = request.getParameterValues("query")[0].toString();
+                    out.println(service.consulta(start,limit,query));
+                }
+            }else if(metodo.equals("POST")){
                 out.print(service.inserta(request));
             }else if(metodo.equals("DELETE")){
                 out.print(service.elimina(request));
