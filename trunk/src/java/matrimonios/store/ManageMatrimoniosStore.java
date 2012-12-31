@@ -56,16 +56,16 @@ public class ManageMatrimoniosStore extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        matrimoniosService service;
-        String metodo;
-         service = new matrimoniosService();
-        
-         int start = Integer.parseInt(request.getParameter("start"));
-                int limit = Integer.parseInt(request.getParameter("limit"));
-                out.println(service.consulta(start,limit));
-        
+//        response.setContentType("text/json;charset=UTF-8");
+//        PrintWriter out = response.getWriter();
+//        matrimoniosService service;
+//        String metodo;
+//         service = new matrimoniosService();
+//        
+//         int start = Integer.parseInt(request.getParameter("start"));
+//                int limit = Integer.parseInt(request.getParameter("limit"));
+//                out.println(service.consulta(start,limit));
+//        
         processRequest(request, response);
         
     }

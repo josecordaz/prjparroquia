@@ -132,7 +132,7 @@ Ext.onReady(function(){
         store: store2,
         loadMask: true,
         multiSelect: true,
-        title: 'Matrimonios',
+//        title: 'Matrimonios',
         frame: true,
         selModel: {
             pruneRemoved: false
