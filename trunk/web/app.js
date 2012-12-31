@@ -131,6 +131,7 @@ Ext.onReady(function(){
         rowLines :true,
         store: store2,
         loadMask: true,
+        emptyText:'No hay registros',
         multiSelect: true,
 //        title: 'Matrimonios',
         frame: true,
