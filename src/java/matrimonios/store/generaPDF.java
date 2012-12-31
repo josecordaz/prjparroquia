@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "generaPDF", urlPatterns = {"/generaPDF.x"})
+@WebServlet(name = "generaPDF", urlPatterns = {"/generaPDF.pdf"})
 public class generaPDF extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

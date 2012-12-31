@@ -9,7 +9,8 @@ Ext.require([
     'Ext.util.*',
     'Ext.state.*',
     'Ext.form.*',
-    'Ext.grid.PagingScroller'
+    'Ext.grid.PagingScroller',
+    'Ext.ux.form.SearchField'
 ]);
 
 Ext.onReady(function(){
@@ -35,21 +36,22 @@ Ext.onReady(function(){
         model:'app.model.matrimonios.MatrimoniosModel',
         autoLoad:true,
         sorters: { property: 'id', direction : 'asc' },
-        autoSync:true,
+//        autoSync:true,
         remoteGroup: true,
         buffered: true,
-        leadingBufferZone: 50,
-        pageSize: 50,
+        leadingBufferZone: 400,
+        pageSize: 100,
         proxy: {
             timeout : 12000,
             type: 'rest',
-//            batchActions:true,
-//            appendId:false,
-//            root: 'data',
+            batchActions:true,
+            appendId:false,
+            root: 'data',
             url : '/'+getAplication()+'/ManageMatrimoniosStore.x',
             reader  : {
                 type        : 'json',
-                root        : 'data'
+                root        : 'data',
+                totalProperty: 'totalCount'
             },
             writer:{
                 type:'json'
@@ -71,6 +73,7 @@ Ext.onReady(function(){
                     });
                 }
             },
+            remoteFilter: true,
              // sends single sort as multi parameter
             simpleSortMode: true,
             // sends single group as multi parameter
@@ -78,17 +81,19 @@ Ext.onReady(function(){
 
             // This particular service cannot sort on more than one field, so grouping === sorting.
             groupParam: 'sort',
-            groupDirectionParam: 'dir'
+            groupDirectionParam: 'dir',
+            // Parameter name to send filtering information in
+            filterParam: 'query',
+
+            // The PHP script just use query=<whatever>
+            encodeFilters: function(filters) {
+                return filters[0].value;
+            }
         },
         listeners:{
             write:function( store, operation, eOpts ){
                 store2.sort('id','ASC');                
             },
-            beforesync:function( options, eOpts ){
-                true;
-                true;
-            },
-            
             // This particular service cannot sort on more than one field, so if grouped, disable sorting
             groupchange: function(store, groupers) {
                 var sortable = !store.isGrouped(),
@@ -105,7 +110,8 @@ Ext.onReady(function(){
                 if (operation.groupers && operation.groupers.length) {
                     delete operation.sorters;
                 }
-            }
+            },
+                totalcountchange: onStoreSizeChange
         }
     });
 
@@ -114,12 +120,20 @@ Ext.onReady(function(){
         autoCancel: false
     });
 
+    function onStoreSizeChange() {
+        grid.down('#status').update({count: store2.getTotalCount()-1});
+    }
     // create the grid and specify what field you want
     // to use for the editor at each column.
+
     var grid = Ext.create('Ext.grid.Panel', {
         columnLines : true,
         rowLines :true,
         store: store2,
+        loadMask: true,
+        multiSelect: true,
+        title: 'Matrimonios',
+        frame: true,
         selModel: {
             pruneRemoved: false
         },
@@ -132,7 +146,6 @@ Ext.onReady(function(){
         }],
         verticalScroller:{
             variableRowHeight: true
-
         },
         columns: [
             {
@@ -167,7 +180,7 @@ Ext.onReady(function(){
                     {
                         header: 'Nombre',
                         dataIndex: 'nombreH',
-                        width: 90,
+                        width: 200,
                         sortable:true,
                         editor: {
 //                            xtype: 'datefield',
@@ -211,7 +224,7 @@ Ext.onReady(function(){
 //                        xtype: 'checkcolumn',
                         header: 'Nombre',
                         dataIndex: 'nombreM',
-                        width: 90,
+                        width: 200,
                         sortable:true,
                         editor: {
                             allowBlank: false
@@ -236,34 +249,24 @@ Ext.onReady(function(){
 //                    maxValue: 150000
                 }
             }, {
-//                xtype: 'checkcolumn',
                 header: 'Unk_1',
                 dataIndex: 'unknow_1',
                 width: 50,
                 sortable:true,
                 editor: {
                     allowBlank: false
-//                    xtype: 'checkbox',
-//                    cls: 'x-grid-checkheader-editor'
                 }
             }, {
-//                xtype: 'checkcolumn',
                 header: 'Unk_2',
                 dataIndex: 'unknow_2',
                 width: 50,
                 sortable:true,
                 editor: {
                     allowBlank: false
-//                    xtype: 'checkbox',
-//                    cls: 'x-grid-checkheader-editor'
                 }
             }
-        ],
-        renderTo: Ext.getBody(),
-        width: 1000,
-        height: 400,
-        title: 'Matrimonios',
-        frame: true,
+        ]
+        ,
         tbar: [
             {
                 text: 'Agregar',
@@ -316,16 +319,24 @@ Ext.onReady(function(){
                 text: 'Importar a PDF',
                 iconCls: 'crear-pdf',
                 handler: function() {
-                    window.open('/prjparroquia/generaPDF.x');
-//                    var sm = grid.getSelectionModel();
-//                    rowEditing.cancelEdit();
-//                    store.remove(sm.getSelection());
-//                    if (store.getCount() > 0) {
-//                        sm.select(0);
-//                    }
+                    window.open('/prjparroquia/generaPDF.pdf');
                 }
+            },'->',
+            {
+                iconCls:'busqueda',
+                width: 400,
+                fieldLabel: 'Search',
+                labelWidth: 50,
+                xtype: 'searchfield',
+                store: store2
+            },{
+                xtype: 'component',
+                id: 'status',
+                tpl: 'Registros: {count}',
+                style: 'margin-right:5px; margin-left:5px'
             }
-        ],
+        ]
+        ,
         plugins: [rowEditing],
         listeners: {
             'selectionchange': function(view, records) {
@@ -333,6 +344,19 @@ Ext.onReady(function(){
             }
         }
     });
+     var win2 = Ext.create('widget.window', {
+        width: 1010,
+        height: 600,
+        x: 50,
+        renderTo: Ext.getBody(),
+        y: 50,
+        title: 'Matrimonios',
+        closable: false,
+        plain: true,
+        layout: 'fit',
+        items: [grid]
+    });
+    win2.show();
 });
 
 getAplication = function(){
