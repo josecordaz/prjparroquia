@@ -1,0 +1,1 @@
+Se pretende que este proyecto ayude en las tareas que se realizan en una parroquia como herramienta para un mayor control y organización.
